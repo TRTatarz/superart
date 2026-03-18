@@ -24,7 +24,7 @@ export default function Home() {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         {GAMES.map((game) => (
           <Link href={`/game/${game.id}`} key={game.id} className="group block text-center">
-            <div className="aspect-square relative border border-gray-200 bg-white overflow-hidden mb-2 hover:shadow-lg rounded-xl transition-all group-hover:-translate-y-1 flex items-center justify-center p-4">
+            <div className="aspect-square relative border border-gray-200 overflow-hidden mb-2 hover:shadow-lg rounded-xl transition-all group-hover:-translate-y-1 flex items-center justify-center p-4">
               <img 
                 src={game.image} 
                 alt={game.name} 

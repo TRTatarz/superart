@@ -28,7 +28,7 @@ export default function GameTopupPage() {
     server: '',
     promoCode: '',
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   if (!gameInfo) {
@@ -57,7 +57,7 @@ export default function GameTopupPage() {
 
     try {
       setIsSubmitting(true);
-      
+
       const response = await fetch('https://httpbin.org/post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,7 +74,7 @@ export default function GameTopupPage() {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
       alert(`เติมเงิน ${gameInfo.name} สำเร็จ!`);
-      
+
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : "เกิดข้อผิดพลาดในการเชื่อมต่อ";
       alert(`Error: ${errorMessage}`);
@@ -92,32 +92,33 @@ export default function GameTopupPage() {
       </div>
 
       <div className="relative w-full h-48 md:h-64 mb-12 rounded-xl overflow-hidden flex items-center justify-center bg-gray-50 border border-gray-100">
-        <img 
-          src={gameInfo.image} 
-          alt={gameInfo.name} 
-          className="object-contain w-full h-full p-4" 
+        <img
+          src={gameInfo.image}
+          alt={gameInfo.name}
+          className="object-contain w-full h-full p-4"
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-          
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="lg:col-span-2 space-y-10">
+
           <section>
-            <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <span className={`bg-gray-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs`}>1</span>
-              เลือกแพ็กเกจ
-            </h2>
+            <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <span className={`bg-gray-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs`}>1</span>
+                เลือกราคาที่ต้องการเติม
+              </h2>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {packages.map((pkg) => (
                 <button
                   key={pkg.id}
                   disabled={isSubmitting}
                   onClick={() => setSelectedPackage(pkg)}
-                  className={`p-4 border-2 rounded-lg text-left transition-all active:scale-[0.98] ${
-                    selectedPackage?.id === pkg.id 
-                    ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-100 font-bold' 
-                    : 'border-gray-100 hover:border-blue-200'
-                  }`}
+                  className={`p-4 border-2 rounded-lg text-left transition-all active:scale-[0.98] ${selectedPackage?.id === pkg.id
+                      ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-100 font-bold'
+                      : 'border-gray-100 hover:border-blue-200'
+                    }`}
                 >
                   <div className="text-sm text-gray-600 mb-1">{pkg.name}</div>
                   <div className="text-lg text-blue-900">{pkg.price} บาท</div>
@@ -129,9 +130,9 @@ export default function GameTopupPage() {
           <section className="space-y-6">
             <h2 className="text-xl font-bold flex items-center gap-2">
               <span className={`bg-gray-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs`}>2</span>
-              ข้อมูลตัว ID
+              ข้อมูล ID
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-1">User ID (UID)*</label>
                 <input
@@ -141,7 +142,7 @@ export default function GameTopupPage() {
                   onChange={handleInputChange}
                   disabled={isSubmitting}
                   className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="กรอก ID ของคุณ"
+                  placeholder="กรอก ID"
                 />
               </div>
               <div>
@@ -159,35 +160,76 @@ export default function GameTopupPage() {
                   <option value="america">America</option>
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">สตรีมเมอร์โค้ดหรือโปรโมชั่นโค้ด</label>
+                <input
+                  name="promoCode"
+                  type="text"
+                  value={formData.promoCode}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder='กรอกโค้ด'
+                />
+
+              </div>
             </div>
           </section>
+          <div className="text-sm text-gray-600">
+            <p>หมายเหตุ</p>
+            <p>- 1 บาทมีค่าเท่ากับ 1 เครดิต กรุณาเติมเครดิตให้เพียงพอต่อการทำรายการในแต่ละครั้ง</p>
+            <p>- ในกรณีที่ลูกค้ากรอกข้อมูลผิดและระบบได้ทำการเติมเงินไปแล้ว ลูกค้าจะไม่สามารถขอเครดิตคืนได้ทุกกรณี</p>
+          </div>
 
-          <button
-            onClick={handlePurchase}
-            disabled={isSubmitting || !selectedPackage}
-            className={`w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 ${
-              isSubmitting || !selectedPackage ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-            }`}
-          >
-            {isSubmitting ? "กำลังส่งข้อมูล..." : `เติมเงินให้ ${gameInfo.name} (${selectedPackage?.price || 0} บาท)`}
-          </button>
+          <section className="space-y-4">
+            <button
+              onClick={handlePurchase}
+              disabled={isSubmitting || !selectedPackage}
+              className={`w-full py-4 rounded-xl font-bold text-white shadow-lg transition-transform active:scale-95 ${isSubmitting || !selectedPackage ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                }`}
+            >
+              {isSubmitting ? "กำลังส่งข้อมูล..." : `ซื้อทันที`}
+            </button>
+          </section>
         </div>
 
         <aside className="lg:col-span-1">
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-8">
-            <h3 className="font-bold text-gray-800 mb-4 underline decoration-blue-500 decoration-2 underline-offset-4">สรุปการสั่งซื้อ</h3>
-            <div className="space-y-3 text-sm text-gray-600 border-b pb-4">
-              <div className="flex justify-between">
-                <span>เกม:</span>
-                <span className="font-medium text-gray-900">{gameInfo.name}</span>
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm sticky top-8 space-y-6">
+            <div>
+              <h3 className="font-bold text-gray-800 mb-4 underline decoration-blue-500 decoration-2 underline-offset-4">สรุปการสั่งซื้อ</h3>
+              <div className="space-y-3 text-sm text-gray-600 border-b pb-4">
+                <div className="flex justify-between">
+                  <span>เกม:</span>
+                  <span className="font-medium text-gray-900">{gameInfo.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>แพ็กเกจ:</span>
+                  <span className="font-medium text-gray-900">{selectedPackage?.name || '-'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>ราคา:</span>
+                  <span className="font-bold text-blue-600">{selectedPackage ? `${selectedPackage.price} บาท` : '-'}</span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span>แพ็กเกจ:</span>
-                <span className="font-medium text-gray-900">{selectedPackage?.name || '-'}</span>
+            </div>
+
+            <div className="h-full flex flex-col">
+              <h3 className="font-semibold mb-4">วิธีดู ID (UID) ของเกม {gameInfo.name}</h3>
+              <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700 mb-6">
+                <li>คลิกที่รูป "ฟันเฟือง" มุมขวาบนของจอ</li>
+                <li>จากนั้นจะปรากฏหน้าตั้งค่าขึ้นมา ให้ไปที่แถบ "เกม" เลข ID จะขึ้นด้านล่าง</li>
+              </ol>
+
+              <div className="w-full aspect-video relative border border-gray-300 mb-6 bg-gray-100 flex items-center justify-center overflow-hidden rounded-lg">
+                <span className="text-gray-800 text-sm">Image</span>
               </div>
-              <div className="flex justify-between">
-                <span>ราคา:</span>
-                <span className="font-bold text-blue-600">{selectedPackage ? `${selectedPackage.price} บาท` : '-'}</span>
+
+              <div className="text-sm text-red-700 space-y-3">
+                <p className="font-semibold">หมายเหตุ</p>
+                <p>- กรุณาใส่เลข UID ให้ครบและถูกต้อง</p>
+                <p>- หากข้อมูลที่กรอกไม่ตรงกับข้อมูลในเกม ระบบจะยกเลิกรายการและคืนเครดิตให้กับลูกค้าทันที</p>
+                <p>- ระบบจะใช้เวลาประมาณ 5-10 นาทีในการทำรายการ</p>
+                <p>- หากทำการเติมเงินเข้าเกมแล้ว ไม่สามารถขอยกเลิกหรือขอคืนเงินได้</p>
               </div>
             </div>
           </div>

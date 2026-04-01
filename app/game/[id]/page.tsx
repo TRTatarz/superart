@@ -64,6 +64,7 @@ export default function GameTopupPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          promoCode: formData.promoCode || null,
           gameName: gameInfo.name,
           gameId: gameId,
           packageId: selectedPackage.id,

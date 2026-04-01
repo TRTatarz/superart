@@ -16,6 +16,7 @@ interface OrderForm {
   promoCode: string;
 }
 
+
 export default function GameTopupPage() {
   const params = useParams();
   const gameId = params.id as string;
@@ -58,7 +59,7 @@ export default function GameTopupPage() {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch('https://httpbin.org/post', {
+      const response = await fetch('http://localhost:3340/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -116,8 +117,8 @@ export default function GameTopupPage() {
                   disabled={isSubmitting}
                   onClick={() => setSelectedPackage(pkg)}
                   className={`p-4 border-2 rounded-lg text-left transition-all active:scale-[0.98] ${selectedPackage?.id === pkg.id
-                      ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-100 font-bold'
-                      : 'border-gray-100 hover:border-blue-200'
+                    ? 'border-blue-600 bg-blue-50 ring-2 ring-blue-100 font-bold'
+                    : 'border-gray-100 hover:border-blue-200'
                     }`}
                 >
                   <div className="text-sm text-gray-600 mb-1">{pkg.name}</div>

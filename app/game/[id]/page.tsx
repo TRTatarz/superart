@@ -59,7 +59,7 @@ export default function GameTopupPage() {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch('http://localhost:3340/OrderPayload', {  // change to your actual backend endpoint brother. ตั้งตามเลขพี่เลยครับ
+      const response = await fetch('http://localhost:3340/orders', {  // change to your actual backend endpoint brother. ตั้งตามเลขพี่เลยครับ
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
